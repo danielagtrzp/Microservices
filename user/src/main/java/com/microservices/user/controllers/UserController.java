@@ -1,18 +1,27 @@
 package com.microservices.user.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.microservices.user.dtos.CreateUserRequest;
+import com.microservices.user.dtos.CreateUserResponse;
+import com.microservices.user.services.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Validated
 public class UserController {
 
-    @GetMapping
-    public List<String> findAllUsers(){
-        List<String> users =List.of("dani,sofia");
-        return users;
+    @Autowired
+    private UserService userService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateUserResponse createUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws Exception {
+        return userService.createUser(createUserRequest);
     }
+
 }
