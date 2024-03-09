@@ -1,5 +1,7 @@
 package com.microservices.course.controllers;
 
+import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import com.microservices.course.exceptions.GlobalExceptionController;
 import com.microservices.course.services.CourseService;
@@ -43,7 +45,7 @@ class CourseControllerTest {
 
     @Test
     void getUserCourses() throws Exception {
-        List<Course> courses= List.of(new Course(),new Course());
+        List<GetUserCoursesResponse> courses= List.of(new GetUserCoursesResponse(),new GetUserCoursesResponse());
         given(courseService.getUserCourses(anyLong())).willReturn(courses);
 
         mockMvc.perform(get("/api/courses/users/1")
@@ -53,5 +55,31 @@ class CourseControllerTest {
                 .andExpect(jsonPath("$").isNotEmpty());
 
         verify(courseService).getUserCourses(anyLong());
+    }
+
+    @Test
+    void addCourse() throws Exception {
+        AddCourseResponse addCourseResponse = new AddCourseResponse();
+        given(courseService.addCourse(any())).willReturn(addCourseResponse);
+
+        mockMvc.perform(post("/api/courses")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                        {
+                          "courseName": "Introduction to Programming",
+                          "courseDescription": "This course provides an introduction to programming and software development.",
+                          "courseAuthor": "John Doe",
+                          "coursePrice": 99.99,
+                          "courseDuration": 30.0
+                        }"""
+                )).andExpect(status().isCreated())
+                .andExpect(jsonPath("$").isMap());
+    }
+
+    @Test
+    void deleteCourse() throws Exception {
+
+        mockMvc.perform(delete("/api/courses/1"))
+                .andExpect(status().isOk());
     }
 }

@@ -20,6 +20,19 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionController {
 
+    //GENERAL
+    @ExceptionHandler(GeneralCustomException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public CustomException handlerGeneralCustomException(GeneralCustomException ex, WebRequest request){
+
+        CustomException response = new CustomException().builder()
+                .timeStamp(LocalDate.now())
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .path(((ServletWebRequest)request).getRequest().getRequestURI())
+                .build();
+        return response;
+    }
     //SAVE
     @ExceptionHandler(EntityExistsException.class)
     @ResponseStatus(code = HttpStatus.CONFLICT)
@@ -146,4 +159,5 @@ public class GlobalExceptionController {
                 .build();
         return response;
     }
+
 }
