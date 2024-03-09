@@ -1,7 +1,9 @@
 package com.microservices.user.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,8 +47,9 @@ public class User {
     @Column(name = "BIO", length = 250)
     private String bio;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AreasOfInterest> AreasOfInterest;
+    private List<AreasOfInterest> areasOfInterest = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserType userType;

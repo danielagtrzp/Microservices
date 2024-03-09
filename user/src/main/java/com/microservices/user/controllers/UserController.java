@@ -1,7 +1,6 @@
 package com.microservices.user.controllers;
 
-import com.microservices.user.dtos.CreateUserRequest;
-import com.microservices.user.dtos.CreateUserResponse;
+import com.microservices.user.dtos.*;
 import com.microservices.user.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +22,13 @@ public class UserController {
     public CreateUserResponse createUser(@Valid @RequestBody CreateUserRequest createUserRequest) throws Exception {
         return userService.createUser(createUserRequest);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdateUserResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest updateUserRequest) throws Exception {
+
+        return userService.updateUser(id, updateUserRequest);
+    }
+
 
 }
