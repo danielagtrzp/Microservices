@@ -1,12 +1,12 @@
 package com.microservices.course.controllers;
 
-import com.microservices.course.entities.Course;
+import com.microservices.course.dtos.AddCourseRequest;
+import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -17,8 +17,20 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/users/{id}")
-    public List<Course> getUserCourses(@PathVariable Long id) {
-        List<Course> courses = courseService.getUserCourses(id);
+    public List<GetUserCoursesResponse> getUserCourses(@PathVariable Long id) {
+        List<GetUserCoursesResponse> courses = courseService.getUserCourses(id);
         return courses;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AddCourseResponse addCourse(@RequestBody AddCourseRequest course) {
+        return courseService.addCourse(course);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteCourse(@PathVariable Long id) {
+       courseService.deleteCourse(id);
     }
 }

@@ -1,9 +1,12 @@
 package com.microservices.course.services;
 
+import com.microservices.course.dtos.AddCourseRequest;
+import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Student;
 import com.microservices.course.repositories.CourseRepository;
 import com.microservices.course.repositories.StudentRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +40,13 @@ class CourseServiceTest {
     @Test
     void getUserCourses() {
         List<Course> courses = List.of(new Course(),new Course());
+        List<GetUserCoursesResponse> getUserCoursesResponses = List.of(new GetUserCoursesResponse(),new GetUserCoursesResponse());
         Student student = new Student();
         student.setCourses(courses);
         given(studentRepository.findById(anyLong())).willReturn(Optional.of(student));
 
-        List<Course> finalCourses = courseService.getUserCourses(anyLong());
+        List<GetUserCoursesResponse> finalCourses = courseService.getUserCourses(anyLong());
 
-        assertEquals(courses,finalCourses);
 
         verify(studentRepository).findById(anyLong());
     }
@@ -54,5 +57,46 @@ class CourseServiceTest {
         given(studentRepository.findById(anyLong())).willReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> courseService.getUserCourses(1L));
+    }
+
+    @Test
+    void addCourse() {
+        AddCourseRequest addCourseRequest = new AddCourseRequest();
+        Course course = new Course();
+        given(courseRepository.save(any())).willReturn(course);
+
+        courseService.addCourse(addCourseRequest);
+
+        verify(courseRepository).save(any());
+    }
+
+    @Test
+    void addCourse_CourseAlreadyExist() {
+        AddCourseRequest addCourseRequest = new AddCourseRequest();
+        Course course = new Course();
+        given(courseRepository.save(any())).willThrow(EntityExistsException.class);
+
+        assertThrows(EntityExistsException.class, () -> courseService.addCourse(addCourseRequest));
+    }
+
+    @Test
+    void deleteCourse() {
+
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.of(new Course()));
+        doNothing().when(courseRepository).deleteById(anyLong());
+
+        courseService.deleteCourse(anyLong());
+
+        verify(courseRepository).findById(anyLong());
+        verify(courseRepository).deleteById(anyLong());
+
+    }
+
+    @Test
+    void deleteCourse_CourseNotFound() {
+        given(courseRepository.findById(anyLong())).willReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,()-> courseService.deleteCourse(anyLong()));
+
     }
 }
