@@ -20,4 +20,6 @@ public interface UserMapper {
     UpdateUserResponse toUpdateUserResponse(User user);
     void updateUserFromRequest(UpdateUserRequest updateUserRequest,@MappingTarget User user);
 
+    //getUserDetailsAndCourses
+    UserDetailResponse toUserDetailResponse(User user);
 }
