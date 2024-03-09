@@ -2,6 +2,7 @@ package com.microservices.user.controllers;
 
 import com.microservices.user.dtos.CreateUserResponse;
 import com.microservices.user.dtos.UpdateUserResponse;
+import com.microservices.user.dtos.UserDetailResponse;
 import com.microservices.user.entities.AreasOfInterest;
 import com.microservices.user.entities.Role;
 import com.microservices.user.entities.UserType;
@@ -100,6 +101,18 @@ class UserControllerTest {
                 .andExpect(jsonPath("$").isMap());
 
         verify(userService).updateUser(anyLong(),any());
+    }
 
+
+    @Test
+    void getUserDetailsAndCourses() throws Exception {
+        UserDetailResponse userDetailResponse = new UserDetailResponse();
+        given(userService.getUserDetailsAndCourses(anyLong())).willReturn(userDetailResponse);
+
+        mockMvc.perform(get("/api/users/1/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isMap());
+
+        verify(userService).getUserDetailsAndCourses(anyLong());
     }
 }

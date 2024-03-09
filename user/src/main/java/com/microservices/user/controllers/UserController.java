@@ -9,6 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+
+
 @RestController
 @RequestMapping("/api/users")
 @Validated
@@ -30,5 +32,10 @@ public class UserController {
         return userService.updateUser(id, updateUserRequest);
     }
 
+    @GetMapping("/{id}/courses")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDetailResponse getUserDetailsAndCourses(@PathVariable Long id){
+        return userService.getUserDetailsAndCourses(id);
+    }
 
 }
