@@ -1,6 +1,7 @@
 package com.microservices.user.exception;
 
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TransactionRequiredException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
@@ -123,6 +124,19 @@ public class GlobalExceptionController {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
     public CustomException handlerHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, WebRequest request){
+
+        CustomException response = new CustomException().builder()
+                .timeStamp(LocalDate.now())
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .path(((ServletWebRequest)request).getRequest().getRequestURI())
+                .build();
+        return response;
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public CustomException handlerEntityNotFoundException(EntityNotFoundException ex, WebRequest request){
 
         CustomException response = new CustomException().builder()
                 .timeStamp(LocalDate.now())
