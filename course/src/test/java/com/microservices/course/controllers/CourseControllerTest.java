@@ -1,6 +1,7 @@
 package com.microservices.course.controllers;
 
 import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import com.microservices.course.exceptions.GlobalExceptionController;
@@ -11,12 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,5 +84,21 @@ class CourseControllerTest {
 
         mockMvc.perform(delete("/api/courses/1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void getCoursesFilteredAndSorted() throws Exception {
+        List<GetCoursesFilteredAndSortedResponse> courses = List.of(
+                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc1","aut1","dom1",1.0,1.0),
+                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc2","aut2","dom2",2.0,2.0)
+                );
+        Sort sort = Sort.by(Sort.Direction.DESC, "coursePrice");
+        given(courseService.getCoursesFilteredAndSorted(any(),any(), eq(sort))).willReturn(courses);
+
+        List<GetCoursesFilteredAndSortedResponse> actualCourses = courseController.getCoursesFilteredAndSorted(null, null, sort);
+
+        assertEquals(courses, actualCourses);
+        verify(courseService).getCoursesFilteredAndSorted(any(), any(), eq(sort));
+
     }
 }
