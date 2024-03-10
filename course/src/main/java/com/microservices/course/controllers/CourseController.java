@@ -2,9 +2,12 @@ package com.microservices.course.controllers;
 
 import com.microservices.course.dtos.AddCourseRequest;
 import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +35,17 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteCourse(@PathVariable Long id) {
        courseService.deleteCourse(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetCoursesFilteredAndSortedResponse> getCoursesFilteredAndSorted(
+            @RequestParam(required = false) String courseName,
+            @RequestParam(required = false) String domain,
+            @SortDefault.SortDefaults({
+                        @SortDefault(sort = "coursePrice", direction = Sort.Direction.ASC),
+                        @SortDefault(sort = "courseName", direction = Sort.Direction.ASC)
+            }) Sort sort)  {
+        return courseService.getCoursesFilteredAndSorted(courseName,domain,sort);
     }
 }

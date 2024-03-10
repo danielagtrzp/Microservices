@@ -2,6 +2,7 @@ package com.microservices.course.services;
 
 import com.microservices.course.dtos.AddCourseRequest;
 import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Student;
@@ -10,6 +11,7 @@ import com.microservices.course.repositories.CourseRepository;
 import com.microservices.course.repositories.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +45,10 @@ public class CourseService {
     public void deleteCourse(Long id) {
         courseRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Courese: " + id + " not found"));
         courseRepository.deleteById(id);
+    }
+
+    public List<GetCoursesFilteredAndSortedResponse> getCoursesFilteredAndSorted(String courseName, String domain, Sort sort) {
+       List<Course> courses = courseRepository.findByCourseNameContainingAndDomainContaining(courseName,domain,sort);
+       return CourseMapper.INSTANCE.toGetCoursesFilteredAndSortedResponse(courses);
     }
 }

@@ -2,6 +2,7 @@ package com.microservices.course.mappers;
 
 import com.microservices.course.dtos.AddCourseRequest;
 import com.microservices.course.dtos.AddCourseResponse;
+import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import org.mapstruct.Mapper;
@@ -20,4 +21,6 @@ public interface CourseMapper {
     AddCourseResponse toCourseResponse(Course courseSaved);
 
     List<GetUserCoursesResponse> toGetUserCoursesResponse(List<Course> courses);
+
+    List<GetCoursesFilteredAndSortedResponse> toGetCoursesFilteredAndSortedResponse(List<Course> courses);
 }

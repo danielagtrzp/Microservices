@@ -1,6 +1,7 @@
 package com.microservices.course.services;
 
 import com.microservices.course.dtos.AddCourseRequest;
+import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
 import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Student;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,6 +99,21 @@ class CourseServiceTest {
         given(courseRepository.findById(anyLong())).willReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class,()-> courseService.deleteCourse(anyLong()));
+
+    }
+
+    @Test
+    void getCoursesFilteredAndSorted() {
+        List<Course> courses = List.of(
+                new Course(),
+                new Course()
+        );
+        Sort sort = Sort.by(Sort.Direction.DESC, "coursePrice");
+        given(courseRepository.findByCourseNameContainingAndDomainContaining(any(),any(), eq(sort))).willReturn(courses);
+
+        List<GetCoursesFilteredAndSortedResponse> actualCourses = courseService.getCoursesFilteredAndSorted(null, null, sort);
+
+        verify(courseRepository).findByCourseNameContainingAndDomainContaining(any(), any(), eq(sort));
 
     }
 }
