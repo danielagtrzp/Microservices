@@ -83,4 +83,9 @@ public class CourseService {
         courseRepository.save(course);
         return CourseMapper.INSTANCE.toAddRatingResponse(ratingSaved);
     }
+
+    public GetCourseDetailsByIdResponse getCourseDetailsById(Long id) {
+        Course course = courseRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Courese: " + id + " not found"));
+        return CourseMapper.INSTANCE.toGetCourseDetailsByIdResponse(course);
+    }
 }

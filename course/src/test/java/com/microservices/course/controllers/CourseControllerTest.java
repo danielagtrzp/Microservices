@@ -128,4 +128,27 @@ class CourseControllerTest {
 
         verify(courseService).addRating(anyLong(),anyLong(),any());
     }
+
+    @Test
+    void getCourseById() throws Exception {
+        GetCourseByIdResponse courses = new GetCourseByIdResponse();
+        given(courseService.getCourseById(anyLong())).willReturn(courses);
+
+        mockMvc.perform(get("/api/courses/1"))
+                .andExpect(status().isOk());
+
+        verify(courseService).getCourseById(anyLong());
+    }
+
+    @Test
+    void getCourseDetailsById() throws Exception {
+
+        GetCourseDetailsByIdResponse courses = new GetCourseDetailsByIdResponse();
+        given(courseService.getCourseDetailsById(anyLong())).willReturn(courses);
+
+        mockMvc.perform(get("/api/courses/1/details"))
+                .andExpect(status().isOk());
+
+        verify(courseService).getCourseDetailsById(anyLong());
+    }
 }
