@@ -8,6 +8,7 @@ import com.microservices.cart.externals.CartToCourseService;
 import com.microservices.cart.mappers.CartItemMapper;
 import com.microservices.cart.repositories.CartItemRepository;
 import com.microservices.cart.repositories.CartRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -74,5 +75,21 @@ class CartServiceTest {
         verify(cartItemRepository).findById(anyLong());
         verify(cartRepository).findByUserId(anyLong());
         verify(cartItemRepository).delete(any());
+    }
+
+    @Test
+    void getCartItemsByUser() {
+        given(cartRepository.findByUserId(anyLong())).willReturn(new Cart());
+
+        cartService.getCartItemsByUser(1L);
+
+        verify(cartRepository).findByUserId(anyLong());
+    }
+
+    @Test
+    void getCartItemsByUser_CartByUserNotFound() {
+        given(cartRepository.findByUserId(anyLong())).willReturn(null);
+
+        assertThrows(NullPointerException.class,()->cartService.getCartItemsByUser(1L));
     }
 }

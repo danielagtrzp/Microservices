@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +50,10 @@ public class CartService {
         }
         cart.getCartItems().remove(cartItem.get());
         cartItemRepository.delete(cartItem.get());
+    }
+
+    public List<GetCartItemsByUserResponse> getCartItemsByUser(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        return CartItemMapper.INSTANCE.toGetCartItemsByUserResponse(cart.getCartItems());
     }
 }
