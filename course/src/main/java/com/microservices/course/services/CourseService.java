@@ -14,6 +14,7 @@ import com.microservices.course.repositories.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,6 +72,7 @@ public class CourseService {
         course.getCourseReviews().add(review);
         Review reviewSaved = reviewRepository.save(review);
         courseRepository.save(course);
+
         return CourseMapper.INSTANCE.toAddReviewResponse(reviewSaved);
     }
 

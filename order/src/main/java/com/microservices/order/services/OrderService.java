@@ -9,6 +9,7 @@ import com.microservices.order.mappers.OrderMapper;
 import com.microservices.order.repositories.OrderItemRepository;
 import com.microservices.order.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class OrderService {
     private OrderCartService orderCartService;
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    KafkaTemplate<String,CreateOrderResponse> kafkaTemplate;
 
     public CreateOrderResponse createOrder(Long userId) {
 
@@ -39,6 +43,11 @@ public class OrderService {
         orderItems.stream()
                 .forEach(orderItem -> orderItem.setOrder(orderSaved));
         orderItemRepository.saveAll(orderItems);
-        return OrderMapper.INSTANCE.toCreateOrderResponse(orderSaved);
+
+
+        CreateOrderResponse createOrderResponse = OrderMapper.INSTANCE.toCreateOrderResponse(orderSaved);
+
+        kafkaTemplate.send("notification-order-ready",String.valueOf(userId), createOrderResponse);
+        return createOrderResponse;
     }
 }
