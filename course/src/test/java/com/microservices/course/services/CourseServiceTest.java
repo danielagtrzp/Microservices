@@ -1,11 +1,13 @@
 package com.microservices.course.services;
 
-import com.microservices.course.dtos.AddCourseRequest;
-import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
-import com.microservices.course.dtos.GetUserCoursesResponse;
+import com.microservices.course.dtos.*;
 import com.microservices.course.entities.Course;
+import com.microservices.course.entities.Rating;
+import com.microservices.course.entities.Review;
 import com.microservices.course.entities.Student;
 import com.microservices.course.repositories.CourseRepository;
+import com.microservices.course.repositories.RatingRepository;
+import com.microservices.course.repositories.ReviewRepository;
 import com.microservices.course.repositories.StudentRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
@@ -31,6 +34,12 @@ class CourseServiceTest {
 
     @Mock
     StudentRepository studentRepository;
+
+    @Mock
+    ReviewRepository reviewRepository;
+
+    @Mock
+    RatingRepository ratingRepository;
 
     @InjectMocks
     CourseService courseService;
@@ -115,5 +124,42 @@ class CourseServiceTest {
 
         verify(courseRepository).findByCourseNameContainingAndDomainContaining(any(), any(), eq(sort));
 
+    }
+
+    @Test
+    void addReview() {
+        Course course = new Course();
+        AddReviewRequest addReviewRequest = new AddReviewRequest();
+        Review savedReview = new Review();
+
+        given(courseRepository.findById(anyLong())).willReturn(Optional.of(course));
+        given(reviewRepository.save(any())).willReturn(savedReview);
+
+
+
+        AddReviewResponse result = courseService.addReview(1L, 1L, addReviewRequest);
+
+        verify(courseRepository).findById(anyLong());
+        verify(reviewRepository).save(any());
+        verify(courseRepository).save(any());
+
+    }
+
+    @Test
+    void addRating() {
+        Course course = new Course();
+        AddRatingRequest addRatingRequest = new AddRatingRequest();
+        Rating savedRating = new Rating();
+
+        given(courseRepository.findById(anyLong())).willReturn(Optional.of(course));
+        given(ratingRepository.save(any())).willReturn(savedRating);
+
+
+
+        AddRatingResponse result = courseService.addRating(1L, 1L, addRatingRequest);
+
+        verify(courseRepository).findById(anyLong());
+        verify(ratingRepository).save(any());
+        verify(courseRepository).save(any());
     }
 }

@@ -47,7 +47,7 @@ public class Course {
 
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reviews> courseReviews = new ArrayList<>();
+    private List<Review> courseReviews = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)

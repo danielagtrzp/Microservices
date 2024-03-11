@@ -23,7 +23,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "REVIEWS")
-public class Reviews {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
