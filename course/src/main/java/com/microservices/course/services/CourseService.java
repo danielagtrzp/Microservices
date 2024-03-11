@@ -1,9 +1,6 @@
 package com.microservices.course.services;
 
-import com.microservices.course.dtos.AddCourseRequest;
-import com.microservices.course.dtos.AddCourseResponse;
-import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
-import com.microservices.course.dtos.GetUserCoursesResponse;
+import com.microservices.course.dtos.*;
 import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Student;
 import com.microservices.course.mappers.CourseMapper;
@@ -50,5 +47,10 @@ public class CourseService {
     public List<GetCoursesFilteredAndSortedResponse> getCoursesFilteredAndSorted(String courseName, String domain, Sort sort) {
        List<Course> courses = courseRepository.findByCourseNameContainingAndDomainContaining(courseName,domain,sort);
        return CourseMapper.INSTANCE.toGetCoursesFilteredAndSortedResponse(courses);
+    }
+
+    public GetCourseByIdResponse getCourseById(Long id) {
+        Course course = courseRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Courese: " + id + " not found"));
+        return CourseMapper.INSTANCE.toGetCourseByIdResponse(course);
     }
 }

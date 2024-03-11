@@ -1,9 +1,6 @@
 package com.microservices.course.controllers;
 
-import com.microservices.course.dtos.AddCourseRequest;
-import com.microservices.course.dtos.AddCourseResponse;
-import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
-import com.microservices.course.dtos.GetUserCoursesResponse;
+import com.microservices.course.dtos.*;
 import com.microservices.course.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,6 +15,12 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetCourseByIdResponse getCourseById(@PathVariable Long id){
+        return courseService.getCourseById(id);
+    }
 
     @GetMapping("/users/{id}")
     public List<GetUserCoursesResponse> getUserCourses(@PathVariable Long id) {

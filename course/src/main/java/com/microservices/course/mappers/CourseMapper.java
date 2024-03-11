@@ -1,9 +1,6 @@
 package com.microservices.course.mappers;
 
-import com.microservices.course.dtos.AddCourseRequest;
-import com.microservices.course.dtos.AddCourseResponse;
-import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
-import com.microservices.course.dtos.GetUserCoursesResponse;
+import com.microservices.course.dtos.*;
 import com.microservices.course.entities.Course;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -23,4 +20,6 @@ public interface CourseMapper {
     List<GetUserCoursesResponse> toGetUserCoursesResponse(List<Course> courses);
 
     List<GetCoursesFilteredAndSortedResponse> toGetCoursesFilteredAndSortedResponse(List<Course> courses);
+
+    GetCourseByIdResponse toGetCourseByIdResponse(Course course);
 }
