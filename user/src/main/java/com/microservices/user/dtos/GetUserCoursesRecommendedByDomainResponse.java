@@ -1,4 +1,4 @@
-package com.microservices.course.dtos;
+package com.microservices.user.dtos;
 
 
 import lombok.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class GetCoursesFilteredAndSortedResponse {
+public class GetUserCoursesRecommendedByDomainResponse {
 
     private Long courseId;
     private String courseName;

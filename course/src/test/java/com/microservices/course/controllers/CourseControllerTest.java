@@ -86,8 +86,8 @@ class CourseControllerTest {
     @Test
     void getCoursesFilteredAndSorted() throws Exception {
         List<GetCoursesFilteredAndSortedResponse> courses = List.of(
-                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc1","aut1","dom1",1.0,1.0),
-                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc2","aut2","dom2",2.0,2.0)
+                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc1","aut1","dom1",1.0,1.0,1.0),
+                new GetCoursesFilteredAndSortedResponse(10L,"name1","desc2","aut2","dom2",2.0,2.0,1.0)
                 );
         Sort sort = Sort.by(Sort.Direction.DESC, "coursePrice");
         given(courseService.getCoursesFilteredAndSorted(any(),any(), eq(sort))).willReturn(courses);

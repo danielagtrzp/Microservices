@@ -7,6 +7,7 @@ import com.microservices.user.mappers.UserMapper;
 import com.microservices.user.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +47,10 @@ public class UserService {
         List<UserCourseFeignResponse> userCourses = userCoursesService.getUserCourses(id);
         userDetailResponse.setCourses(userCourses);
         return  userDetailResponse;
+    }
+
+    public List<GetUserCoursesRecommendedByDomainResponse> getUserCoursesRecommendedByDomain(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found: " + id));
+        return userCoursesService.getCoursesFilteredAndSorted("", user.getDomainExpertise(),Sort.by("domain"));
     }
 }
