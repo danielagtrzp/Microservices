@@ -1,6 +1,7 @@
 package com.microservices.cart.controllers;
 
 import com.microservices.cart.dtos.AddCartItemResponse;
+import com.microservices.cart.dtos.GetCartItemsByUserResponse;
 import com.microservices.cart.exceptions.GlobalExceptionController;
 import com.microservices.cart.services.CartService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.*;
@@ -51,6 +54,15 @@ class CartControllerTest {
     @Test
     void deleteCartItem() throws Exception {
         mockMvc.perform(delete("/api/carts/1/users/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getCartItemsByUser() throws Exception {
+        List<GetCartItemsByUserResponse> cartItems = List.of();
+        given(cartService.getCartItemsByUser(anyLong())).willReturn(cartItems);
+
+        mockMvc.perform(get("/api/carts/users/1"))
                 .andExpect(status().isOk());
     }
 }

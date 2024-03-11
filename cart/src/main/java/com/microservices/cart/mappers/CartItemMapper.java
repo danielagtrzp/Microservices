@@ -3,11 +3,14 @@ package com.microservices.cart.mappers;
 import com.microservices.cart.dtos.AddCartItemRequest;
 import com.microservices.cart.dtos.AddCartItemResponse;
 import com.microservices.cart.dtos.CartCourseFeignResponse;
+import com.microservices.cart.dtos.GetCartItemsByUserResponse;
 import com.microservices.cart.entities.CartItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 @Mapper
 public interface CartItemMapper {
@@ -19,4 +22,6 @@ public interface CartItemMapper {
     CartItem toCartItem(CartCourseFeignResponse cartCourseFeignResponse);
 
     AddCartItemResponse toAddCartResponse(CartItem cartItem);
+
+    List<GetCartItemsByUserResponse> toGetCartItemsByUserResponse(List<CartItem> cartItems);
 }
