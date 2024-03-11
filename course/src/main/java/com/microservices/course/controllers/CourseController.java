@@ -22,6 +22,12 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
+    @GetMapping("/{id}/details")
+    @ResponseStatus(HttpStatus.OK)
+    public GetCourseDetailsByIdResponse getCourseDetailsById(@PathVariable Long id){
+        return courseService.getCourseDetailsById(id);
+    }
+
     @GetMapping("/users/{id}")
     public List<GetUserCoursesResponse> getUserCourses(@PathVariable Long id) {
         List<GetUserCoursesResponse> courses = courseService.getUserCourses(id);

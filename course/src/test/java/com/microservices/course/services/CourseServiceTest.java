@@ -162,4 +162,24 @@ class CourseServiceTest {
         verify(ratingRepository).save(any());
         verify(courseRepository).save(any());
     }
+
+    @Test
+    void getCourseById() {
+        Optional<Course> course= Optional.of(new Course());
+        given(courseRepository.findById(anyLong())).willReturn(course);
+
+        courseService.getCourseById(1L);
+
+        verify(courseRepository).findById(anyLong());
+    }
+
+    @Test
+    void getCourseDetailsById() {
+        Optional<Course> course= Optional.of(new Course());
+        given(courseRepository.findById(anyLong())).willReturn(course);
+
+        courseService.getCourseDetailsById(1L);
+
+        verify(courseRepository).findById(anyLong());
+    }
 }

@@ -32,4 +32,6 @@ public interface CourseMapper {
     Rating toRating(AddRatingRequest addRatingRequest);
 
     AddRatingResponse toAddRatingResponse(Rating ratingSaved);
+
+    GetCourseDetailsByIdResponse toGetCourseDetailsByIdResponse(Course course);
 }
