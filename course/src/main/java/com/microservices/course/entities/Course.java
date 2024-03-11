@@ -64,4 +64,6 @@ public class Course {
     )
     private List<Student> students = new ArrayList<>();
 
+    @Column(name = "COURSE_PERFORMANCE")
+    private Double performance;
 }

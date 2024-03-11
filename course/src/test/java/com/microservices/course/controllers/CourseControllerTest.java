@@ -164,4 +164,25 @@ class CourseControllerTest {
         verify(courseService).getCoursesDetailsByUserId(anyLong());
     }
 
+    @Test
+    void getCoursesSortedByPerformance() throws Exception {
+        List<GetCoursesSortedByPerformanceResponse> courses= List.of();
+        Sort sort = Sort.by(Sort.Direction.DESC, "coursePrice");
+        given(courseService.getCoursesSortedByPerformance(eq(sort))).willReturn(courses);
+
+       courseService.getCoursesSortedByPerformance(sort);
+
+        verify(courseService).getCoursesSortedByPerformance(any(Sort.class));
+    }
+
+    @Test
+    void updatePerformance() throws Exception {
+        given(courseService.updatePerformance(anyLong())).willReturn(new UpdatePerformanceResponse());
+
+        mockMvc.perform(put("/api/courses/1"))
+                .andExpect(status().isOk());
+
+        verify(courseService).updatePerformance(anyLong());
+    }
+
 }

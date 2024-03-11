@@ -5,6 +5,7 @@ import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Rating;
 import com.microservices.course.entities.Review;
 import com.microservices.course.entities.Student;
+import com.microservices.course.exceptions.GeneralCustomException;
 import com.microservices.course.mappers.CourseMapper;
 import com.microservices.course.repositories.CourseRepository;
 import com.microservices.course.repositories.RatingRepository;
@@ -97,5 +98,31 @@ public class CourseService {
         }
         List<Course> courses = student.get().getCourses();
         return CourseMapper.INSTANCE.toGetCourseByUserIdResponse(courses);
+    }
+
+    public List<GetCoursesSortedByPerformanceResponse> getCoursesSortedByPerformance(Sort sort) {
+        List<Course> allCoursesSorted = courseRepository.findAll(sort);
+        return CourseMapper.INSTANCE.toGetCoursesSortedByPerformanceResponse(allCoursesSorted);
+    }
+
+    public UpdatePerformanceResponse updatePerformance(Long id) {
+        Optional<Course> optionalCourse = courseRepository.findById(id);
+        if (optionalCourse.isEmpty()){
+            throw new EntityNotFoundException();
+        }
+        Course course = optionalCourse.get();
+        List<Rating> courseRatings = course.getCourseRatings();
+        Optional<Double> optionalAverage = courseRatings.stream()
+                                        .map(Rating::getRating)
+                                        .reduce(Double::sum)
+                                        .map(sum->(Double)sum/courseRatings.size());
+        if (optionalAverage.isEmpty()){
+            throw new EntityNotFoundException();
+        }
+        Double average = optionalAverage.get();
+        course.setPerformance(average);
+        Course courseSaved = courseRepository.save(course);
+
+        return CourseMapper.INSTANCE.toUpdatePerformanceResponse(courseSaved);
     }
 }

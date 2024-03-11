@@ -5,6 +5,7 @@ import com.microservices.course.entities.Course;
 import com.microservices.course.entities.Rating;
 import com.microservices.course.entities.Review;
 import com.microservices.course.entities.Student;
+import com.microservices.course.exceptions.GeneralCustomException;
 import com.microservices.course.repositories.CourseRepository;
 import com.microservices.course.repositories.RatingRepository;
 import com.microservices.course.repositories.ReviewRepository;
@@ -187,5 +188,28 @@ class CourseServiceTest {
         List<GetCourseByUserIdResponse> finalCourses = courseService.getCoursesDetailsByUserId(anyLong());
 
         verify(studentRepository).findById(anyLong());
+    }
+
+    @Test
+    void getCoursesSortedByPerformance() {
+        given(courseRepository.findAll(any(Sort.class))).willReturn(List.of());
+        courseService.getCoursesSortedByPerformance(Sort.by("some"));
+        verify(courseRepository).findAll(any(Sort.class));
+    }
+
+    @Test
+    void updatePerformance() {
+        List<Review> reviews = List.of(new Review(1L,"some",1L,new Course()));
+        List<Rating> ratings = List.of(new Rating(1L,10.0,1L,new Course()));
+        List<Student> students = List.of(new Student(1L,"student","student","student",List.of()));
+        Course course = new Course(1L,"some","some","some","some",1.0,1.0,reviews,ratings,students,10.0);
+        given(courseRepository.findById(anyLong())).willReturn(Optional.of(course));
+        given(courseRepository.save(any())).willReturn(course);
+
+        UpdatePerformanceResponse response = courseService.updatePerformance(1L);
+
+        verify(courseRepository).findById(anyLong());
+        verify(courseRepository).save(any());
+
     }
 }

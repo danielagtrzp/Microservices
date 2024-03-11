@@ -77,4 +77,20 @@ public class CourseController {
         return courseService.getCoursesDetailsByUserId(userId);
     }
 
+    @GetMapping("/performance")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetCoursesSortedByPerformanceResponse> getCoursesSortedByPerformance(@SortDefault.SortDefaults({
+            @SortDefault(sort = "coursePrice", direction = Sort.Direction.ASC),
+            @SortDefault(sort = "courseName", direction = Sort.Direction.ASC)
+    }) Sort sort)  {
+        return courseService.getCoursesSortedByPerformance(sort);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdatePerformanceResponse updatePerformance(@PathVariable Long id)  {
+        return courseService.updatePerformance(id);
+    }
+
+
 }
