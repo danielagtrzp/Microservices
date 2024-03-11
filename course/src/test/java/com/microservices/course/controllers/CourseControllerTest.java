@@ -1,8 +1,6 @@
 package com.microservices.course.controllers;
 
-import com.microservices.course.dtos.AddCourseResponse;
-import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
-import com.microservices.course.dtos.GetUserCoursesResponse;
+import com.microservices.course.dtos.*;
 import com.microservices.course.exceptions.GlobalExceptionController;
 import com.microservices.course.services.CourseService;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,5 +97,35 @@ class CourseControllerTest {
         assertEquals(courses, actualCourses);
         verify(courseService).getCoursesFilteredAndSorted(any(), any(), eq(sort));
 
+    }
+
+    @Test
+    void addReview() throws Exception {
+        given(courseService.addReview(anyLong(),anyLong(),any())).willReturn(new AddReviewResponse());
+
+        mockMvc.perform(put("/api/courses/1/reviews/users/1")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                        {
+                            "review":"is aweasome"
+                        }"""))
+                .andExpect(status().isOk());
+
+        verify(courseService).addReview(anyLong(),anyLong(),any());
+    }
+
+    @Test
+    void addRating() throws Exception {
+        given(courseService.addRating(anyLong(),anyLong(),any())).willReturn(new AddRatingResponse());
+
+        mockMvc.perform(put("/api/courses/1/ratings/users/1")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                        {
+                            "rating":4.0
+                        }"""))
+                .andExpect(status().isOk());
+
+        verify(courseService).addRating(anyLong(),anyLong(),any());
     }
 }

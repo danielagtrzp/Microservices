@@ -51,4 +51,17 @@ public class CourseController {
             }) Sort sort)  {
         return courseService.getCoursesFilteredAndSorted(courseName,domain,sort);
     }
+
+    @PutMapping("/{courseId}/reviews/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AddReviewResponse addReview(@PathVariable Long courseId ,@PathVariable Long userId, @RequestBody AddReviewRequest addReviewRequest) {
+        return courseService.addReview(courseId, userId, addReviewRequest);
+    }
+
+
+    @PutMapping("/{courseId}/ratings/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public AddRatingResponse addRating(@PathVariable Long courseId, @PathVariable Long userId, @RequestBody AddRatingRequest addRatingRequest) {
+        return courseService.addRating(courseId, userId,addRatingRequest);
+    }
 }
