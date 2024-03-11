@@ -3,7 +3,6 @@ package com.microservices.course.controllers;
 import com.microservices.course.dtos.AddCourseResponse;
 import com.microservices.course.dtos.GetCoursesFilteredAndSortedResponse;
 import com.microservices.course.dtos.GetUserCoursesResponse;
-import com.microservices.course.entities.Course;
 import com.microservices.course.exceptions.GlobalExceptionController;
 import com.microservices.course.services.CourseService;
 import org.junit.jupiter.api.BeforeEach;
