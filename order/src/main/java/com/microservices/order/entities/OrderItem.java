@@ -1,5 +1,6 @@
 package com.microservices.order.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "ORDER_ITEMS")
-public class OrderItems {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +38,7 @@ public class OrderItems {
 
     @ManyToOne
     @JoinColumn(name = "ORDER_ID")
+    @JsonIgnore
     private Order order;
 
 }
