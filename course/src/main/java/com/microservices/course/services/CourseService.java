@@ -88,4 +88,14 @@ public class CourseService {
         Course course = courseRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Courese: " + id + " not found"));
         return CourseMapper.INSTANCE.toGetCourseDetailsByIdResponse(course);
     }
+
+    public List<GetCourseByUserIdResponse> getCoursesDetailsByUserId(Long userId) {
+
+        Optional<Student> student = studentRepository.findById(userId);
+        if (student.isEmpty()){
+            throw new EntityNotFoundException();
+        }
+        List<Course> courses = student.get().getCourses();
+        return CourseMapper.INSTANCE.toGetCourseByUserIdResponse(courses);
+    }
 }

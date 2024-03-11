@@ -151,4 +151,17 @@ class CourseControllerTest {
 
         verify(courseService).getCourseDetailsById(anyLong());
     }
+
+    @Test
+    void getCoursesDetailsByUserId() throws Exception {
+        List<GetCourseByUserIdResponse> courses= List.of();
+        given(courseService.getCoursesDetailsByUserId(anyLong())).willReturn(courses);
+
+        mockMvc.perform(get("/api/courses/users/1/details")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(courseService).getCoursesDetailsByUserId(anyLong());
+    }
+
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class CourseResponse {
+public class UserCourseFeignResponse {
 
     private Long courseId;
     private String courseName;
