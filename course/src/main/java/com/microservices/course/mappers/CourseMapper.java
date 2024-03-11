@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface CourseMapper {
@@ -36,4 +37,8 @@ public interface CourseMapper {
     GetCourseDetailsByIdResponse toGetCourseDetailsByIdResponse(Course course);
 
     List<GetCourseByUserIdResponse> toGetCourseByUserIdResponse(List<Course> courses);
+
+    List<GetCoursesSortedByPerformanceResponse> toGetCoursesSortedByPerformanceResponse(List<Course> allCoursesSorted);
+
+    UpdatePerformanceResponse toUpdatePerformanceResponse(Course course);
 }
