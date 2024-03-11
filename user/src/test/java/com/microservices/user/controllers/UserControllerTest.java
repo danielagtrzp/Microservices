@@ -1,6 +1,7 @@
 package com.microservices.user.controllers;
 
 import com.microservices.user.dtos.CreateUserResponse;
+import com.microservices.user.dtos.GetUserCoursesRecommendedByDomainResponse;
 import com.microservices.user.dtos.UpdateUserResponse;
 import com.microservices.user.dtos.UserDetailResponse;
 import com.microservices.user.entities.AreasOfInterest;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -115,4 +117,16 @@ class UserControllerTest {
 
         verify(userService).getUserDetailsAndCourses(anyLong());
     }
+
+    @Test
+    void getUserCoursesRecommendedByDomain() throws Exception {
+        List<GetUserCoursesRecommendedByDomainResponse> response=new ArrayList<>();
+        given(userService.getUserCoursesRecommendedByDomain(anyLong())).willReturn(response);
+
+        mockMvc.perform(get("/api/users/1/courses/domain"))
+                .andExpect(status().isOk());
+
+        verify(userService).getUserCoursesRecommendedByDomain(anyLong());
+    }
+
 }

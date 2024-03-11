@@ -76,4 +76,5 @@ public class CourseController {
     public List<GetCourseByUserIdResponse> getCoursesDetailsByUserId(@PathVariable Long userId){
         return courseService.getCoursesDetailsByUserId(userId);
     }
+
 }

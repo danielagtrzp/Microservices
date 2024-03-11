@@ -1,9 +1,6 @@
 package com.microservices.user.services;
 
-import com.microservices.user.dtos.UserCourseFeignResponse;
-import com.microservices.user.dtos.CreateUserRequest;
-import com.microservices.user.dtos.UpdateUserRequest;
-import com.microservices.user.dtos.UserDetailResponse;
+import com.microservices.user.dtos.*;
 import com.microservices.user.entities.User;
 import com.microservices.user.externals.UserCoursesService;
 
@@ -15,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,5 +89,18 @@ class UserServiceTest {
         given(userRepository.findById(anyLong())).willReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> userService.getUserDetailsAndCourses(1L));
+    }
+
+    @Test
+    void getUserCoursesRecommendedByDomain() {
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(new User()));
+        List<GetUserCoursesRecommendedByDomainResponse> courses= List.of(new GetUserCoursesRecommendedByDomainResponse());
+        Sort sort = Sort.by(Sort.Direction.DESC, "coursePrice");
+        given(userCoursesService.getCoursesFilteredAndSorted(any(),any(),eq(sort))).willReturn(courses);
+
+        userService.getUserCoursesRecommendedByDomain(1L);
+
+        verify(userRepository).findById(anyLong());
+        verify(userCoursesService).getCoursesFilteredAndSorted(anyString(),anyString(),eq(sort));
     }
 }

@@ -38,4 +38,9 @@ public class UserController {
         return userService.getUserDetailsAndCourses(id);
     }
 
+    @GetMapping("/{id}/courses/domain")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetUserCoursesRecommendedByDomainResponse> getUserCoursesRecommendedByDomain(@PathVariable Long id){
+        return userService.getUserCoursesRecommendedByDomain(id);
+    }
 }
