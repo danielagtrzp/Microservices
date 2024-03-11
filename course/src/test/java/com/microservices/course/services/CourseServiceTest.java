@@ -50,14 +50,10 @@ class CourseServiceTest {
 
     @Test
     void getUserCourses() {
-        List<Course> courses = List.of(new Course(),new Course());
-        List<GetUserCoursesResponse> getUserCoursesResponses = List.of(new GetUserCoursesResponse(),new GetUserCoursesResponse());
         Student student = new Student();
-        student.setCourses(courses);
         given(studentRepository.findById(anyLong())).willReturn(Optional.of(student));
 
         List<GetUserCoursesResponse> finalCourses = courseService.getUserCourses(anyLong());
-
 
         verify(studentRepository).findById(anyLong());
     }
@@ -181,5 +177,15 @@ class CourseServiceTest {
         courseService.getCourseDetailsById(1L);
 
         verify(courseRepository).findById(anyLong());
+    }
+
+    @Test
+    void getCoursesDetailsByUserId() {
+        Student student = new Student();
+        given(studentRepository.findById(anyLong())).willReturn(Optional.of(student));
+
+        List<GetCourseByUserIdResponse> finalCourses = courseService.getCoursesDetailsByUserId(anyLong());
+
+        verify(studentRepository).findById(anyLong());
     }
 }

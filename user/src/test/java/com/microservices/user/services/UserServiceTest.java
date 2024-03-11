@@ -1,6 +1,6 @@
 package com.microservices.user.services;
 
-import com.microservices.user.dtos.CourseResponse;
+import com.microservices.user.dtos.UserCourseFeignResponse;
 import com.microservices.user.dtos.CreateUserRequest;
 import com.microservices.user.dtos.UpdateUserRequest;
 import com.microservices.user.dtos.UserDetailResponse;
@@ -76,7 +76,7 @@ class UserServiceTest {
     @Test
     void getUserDetailsAndCourses() {
         User user = new User();
-        List<CourseResponse> expectedCourses = List.of(new CourseResponse(), new CourseResponse());
+        List<UserCourseFeignResponse> expectedCourses = List.of(new UserCourseFeignResponse(), new UserCourseFeignResponse());
         given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
         given(userCoursesService.getUserCourses(anyLong())).willReturn(expectedCourses);
 

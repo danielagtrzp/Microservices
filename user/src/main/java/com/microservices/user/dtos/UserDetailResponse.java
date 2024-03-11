@@ -24,5 +24,5 @@ public class UserDetailResponse {
     private Role role;
     private String domainExpertise;
     private String profileImage;
-    private List<CourseResponse> courses;
+    private List<UserCourseFeignResponse> courses;
 }

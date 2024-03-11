@@ -70,4 +70,10 @@ public class CourseController {
     public AddRatingResponse addRating(@PathVariable Long courseId, @PathVariable Long userId, @RequestBody AddRatingRequest addRatingRequest) {
         return courseService.addRating(courseId, userId,addRatingRequest);
     }
+
+    @GetMapping("/users/{userId}/details")
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetCourseByUserIdResponse> getCoursesDetailsByUserId(@PathVariable Long userId){
+        return courseService.getCoursesDetailsByUserId(userId);
+    }
 }

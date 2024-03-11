@@ -34,4 +34,6 @@ public interface CourseMapper {
     AddRatingResponse toAddRatingResponse(Rating ratingSaved);
 
     GetCourseDetailsByIdResponse toGetCourseDetailsByIdResponse(Course course);
+
+    List<GetCourseByUserIdResponse> toGetCourseByUserIdResponse(List<Course> courses);
 }

@@ -43,7 +43,7 @@ public class UserService {
         }
         User user = optionalUser.get();
         UserDetailResponse userDetailResponse = UserMapper.INSTANCE.toUserDetailResponse(user);
-        List<CourseResponse> userCourses = userCoursesService.getUserCourses(id);
+        List<UserCourseFeignResponse> userCourses = userCoursesService.getUserCourses(id);
         userDetailResponse.setCourses(userCourses);
         return  userDetailResponse;
     }
